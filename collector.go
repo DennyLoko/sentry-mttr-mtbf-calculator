@@ -7,24 +7,24 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/Sirupsen/logrus"
 	"github.com/kr/pretty"
 	"github.com/pedrommone/sentry-mttr-mtbf-calculator/log"
-	"github.com/Sirupsen/logrus"
 	"github.com/tomnomnom/linkheader"
 
 	_ "github.com/joho/godotenv/autoload"
 )
 
 type Collector struct {
-	Log		*logrus.Logger
+	Log *logrus.Logger
 }
 
 const sentryURL = "https://sentry.io/api/"
 
 var (
-	sentryToken	string
-	projects	[]Project
-	issues		[]Issue
+	sentryToken string
+	projects    []Project
+	issues      []Issue
 )
 
 func Collect() *Collector {
@@ -37,7 +37,7 @@ func Collect() *Collector {
 	c := new(Collector)
 	c.Log = log.NewLogrus()
 
-	return c;
+	return c
 }
 
 func (c *Collector) Start() {
@@ -51,12 +51,12 @@ func (c *Collector) Start() {
 }
 
 func (c *Collector) requestProjects(cursor string) (resp *http.Response, err error) {
-	client := &http.Client {}
+	client := &http.Client{}
 	uri := fmt.Sprintf("%s0/projects/?query=&cursor=%s", sentryURL, cursor)
 
 	c.Log.Info(fmt.Sprintf("GET %s", uri))
 
-	req, _ := http.NewRequest("GET", uri, nil);
+	req, _ := http.NewRequest("GET", uri, nil)
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", sentryToken))
 
 	resp, err = client.Do(req)
@@ -93,12 +93,12 @@ func (c *Collector) getProjects(cursor string) (projects []Project) {
 }
 
 func (c *Collector) requestIssues(project Project, cursor string) (resp *http.Response, err error) {
-	client := &http.Client {}
+	client := &http.Client{}
 	uri := fmt.Sprintf("%s0/projects/%s/%s/issues/?query=&cursor=%s", sentryURL, project.Organization.Slug, project.Slug, cursor)
 
 	c.Log.Info(fmt.Sprintf("GET %s", uri))
 
-	req, _ := http.NewRequest("GET", uri, nil);
+	req, _ := http.NewRequest("GET", uri, nil)
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", sentryToken))
 
 	resp, err = client.Do(req)
@@ -112,7 +112,7 @@ func (c *Collector) requestIssues(project Project, cursor string) (resp *http.Re
 
 func (c *Collector) getIssues(project Project, cursor string) (issues []Issue) {
 	resp, _ := c.requestIssues(project, cursor)
-	currentIssues := []Issue {}
+	currentIssues := []Issue{}
 
 	b, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -156,12 +156,12 @@ func (c *Collector) getIssue(id string) (issue Issue) {
 }
 
 func (c *Collector) requestIssue(id string) (resp *http.Response, err error) {
-	client := &http.Client {}
+	client := &http.Client{}
 	uri := fmt.Sprintf("%s0/issues/%s/", sentryURL, id)
 
 	c.Log.Info(fmt.Sprintf("GET %s", uri))
 
-	req, _ := http.NewRequest("GET", uri, nil);
+	req, _ := http.NewRequest("GET", uri, nil)
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", sentryToken))
 
 	resp, err = client.Do(req)
