@@ -5,7 +5,6 @@ import (
 
 	"github.com/kr/pretty"
 	"github.com/pedrommone/sentry-mttr-mtbf-calculator/log"
-	"github.com/Sirupsen/logrus"
 
 	_ "github.com/joho/godotenv/autoload"
 )
@@ -24,7 +23,7 @@ func NewCalculator() *Calculator {
 	calc.Log = log.NewLogrus()
 	calc.Collector = Collect()
 
-	return calc;
+	return calc
 }
 
 func (c *Calculator) Start() {

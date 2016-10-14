@@ -37,7 +37,7 @@ func Collect() *Collector {
 	c := new(Collector)
 	c.Log = log.NewLogrus()
 
-	return c;
+	return c
 }
 
 func (c *Collector) Start() {
@@ -56,7 +56,7 @@ func (c *Collector) requestProjects(cursor string) (resp *http.Response, err err
 
 	c.Log.Info(fmt.Sprintf("GET %s", uri))
 
-	req, _ := http.NewRequest("GET", uri, nil);
+	req, _ := http.NewRequest("GET", uri, nil)
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", sentryToken))
 
 	resp, err = client.Do(req)
@@ -98,7 +98,7 @@ func (c *Collector) requestIssues(project Project, cursor string) (resp *http.Re
 
 	c.Log.Info(fmt.Sprintf("GET %s", uri))
 
-	req, _ := http.NewRequest("GET", uri, nil);
+	req, _ := http.NewRequest("GET", uri, nil)
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", sentryToken))
 
 	resp, err = client.Do(req)
@@ -161,7 +161,7 @@ func (c *Collector) requestIssue(id string) (resp *http.Response, err error) {
 
 	c.Log.Info(fmt.Sprintf("GET %s", uri))
 
-	req, _ := http.NewRequest("GET", uri, nil);
+	req, _ := http.NewRequest("GET", uri, nil)
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", sentryToken))
 
 	resp, err = client.Do(req)
